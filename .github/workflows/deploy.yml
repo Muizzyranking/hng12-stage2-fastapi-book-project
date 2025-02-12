@@ -26,7 +26,8 @@ jobs:
     - name: Deploy to EC2
       run: |
         ssh -i "~/.ssh/id_rsa" ubuntu@ec2-54-82-61-53.compute-1.amazonaws.com
-        PROJECT_DIR="/home/ubuntu/hng12-stage2-fastapi-book-project"
+        mkdir -p $HOME/projects
+        PROJECT_DIR="$HOME/projects/hng12-stage2-fastapi-book-project"
 
         if [ -d "$PROJECT_DIR" ]; then
           echo "Directory exists, pulling latest changes"
@@ -34,8 +35,8 @@ jobs:
           git pull origin main
         else
           echo "Directory does not exist, cloning repository"
-          cd /home/ubuntu
-          git clone https://github.com/yourusername/hng12-stage2-fastapi-book-project.git
+          cd "$HOME/projects"
+          git clone https://github.com/Muizzyranking/hng12-stage2-fastapi-book-project.git
           cd "$PROJECT_DIR"
         fi
 
