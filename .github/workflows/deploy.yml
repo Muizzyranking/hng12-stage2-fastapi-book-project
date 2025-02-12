@@ -19,6 +19,10 @@ jobs:
         echo "${{ secrets.EC2_SSH_KEY }}" | base64 -d > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
 
+    - name: Add EC2 host key to known_hosts
+      run: |
+        ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+
     - name: Deploy to EC2
       run: |
         ssh -i "~/.ssh/id_rsa" ubuntu@ec2-54-82-61-53.compute-1.amazonaws.com
@@ -34,4 +38,3 @@ jobs:
           sudo systemctl restart gunicorn
           sudo systemctl reload nginx
         EOF
-
