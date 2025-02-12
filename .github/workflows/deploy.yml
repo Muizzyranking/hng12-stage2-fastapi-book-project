@@ -31,7 +31,7 @@ jobs:
 
     - name: Deploy to EC2
       run: |
-        ssh -i "~/.ssh/id_rsa" ubuntu@ec2-54-82-61-53.compute-1.amazonaws.com
+        ssh -i ~/.ssh/id_rsa ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
         mkdir -p $HOME/projects
         PROJECT_DIR="$HOME/projects/hng12-stage2-fastapi-book-project"
 
