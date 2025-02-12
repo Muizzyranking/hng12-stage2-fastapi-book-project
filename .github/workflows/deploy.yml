@@ -26,15 +26,28 @@ jobs:
     - name: Deploy to EC2
       run: |
         ssh -i "~/.ssh/id_rsa" ubuntu@ec2-54-82-61-53.compute-1.amazonaws.com
-          # Navigate to the app directory
-          cd hng12-stage2-fastapi-book-project
+        PROJECT_DIR="/home/ubuntu/hng12-stage2-fastapi-book-project"
 
-          # Pull latest changes
+        if [ -d "$PROJECT_DIR" ]; then
+          echo "Directory exists, pulling latest changes"
+          cd "$PROJECT_DIR"
           git pull origin main
+        else
+          echo "Directory does not exist, cloning repository"
+          cd /home/ubuntu
+          git clone https://github.com/yourusername/hng12-stage2-fastapi-book-project.git
+          cd "$PROJECT_DIR"
+        fi
 
-          source venv/bin/activate
-          pip install -r requirements.txt
+        if [ ! -d "venv" ]; then
+          python3 -m venv venv
+        fi
 
-          sudo systemctl restart gunicorn
-          sudo systemctl reload nginx
+        git pull origin main
+
+        source venv/bin/activate
+        pip install -r requirements.txt
+
+        sudo systemctl restart gunicorn
+        sudo systemctl reload nginx
         EOF
